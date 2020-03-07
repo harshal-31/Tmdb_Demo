@@ -6,6 +6,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.PropertyChangeRegistry
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import com.example.media.myapplication.data.room_database.RoomHelper
 import com.example.vlcplayer.data.room_database.RoomRepository
 import com.google.gson.Gson
@@ -20,6 +21,7 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
     val isDisplayNoData = ObservableBoolean(false)
     val noDataAvailableMsg = ObservableField<String>("")
     private val callbacks = PropertyChangeRegistry()
+
 
 
 

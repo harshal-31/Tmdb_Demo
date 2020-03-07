@@ -43,6 +43,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../Music/jioguard_kotlin/app/src/main/java/com/jio/media/jioguard/data/network/ApiInterface.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../Music/jioguard_kotlin/app/src/main/java/com/jio/media/jioguard/singelton_app_level/BindingUtil.kt">
           <value>
             <set />
@@ -64,6 +69,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../Music/jioguard_kotlin/app/src/main/java/com/jio/media/jioguard/util/ProjectUtil.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Pictures/VlcPlayer/app/src/main/java/com/example/vlcplayer/home/HomeViewModel.kt">
           <value>
             <set />
           </value>
@@ -163,12 +173,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/media/myapplication/base/TmdbApplication.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/example/media/myapplication/data/AppDataManager.kt">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/example/media/myapplication/data/model/BaseErrorStatusCode.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/media/myapplication/data/model/Credits.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/media/myapplication/data/model/MovieDetail.kt">
           <value>
             <set />
           </value>
@@ -274,6 +299,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/example/media/myapplication/ui/movies/MoviesViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/media/myapplication/ui/second_screen/CastAdapter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/media/myapplication/ui/second_screen/MovieInfoAdapter.kt">
           <value>
             <set />
           </value>
@@ -458,6 +493,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout/cast_view_holder.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/layout/common_adapter_progress_layout.xml">
           <value>
             <set />
@@ -484,6 +524,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/layout/fragment_movies.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout/movies_info_view_holder.xml">
           <value>
             <set />
           </value>

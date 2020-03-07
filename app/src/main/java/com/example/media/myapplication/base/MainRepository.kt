@@ -4,9 +4,6 @@ import android.app.Application
 import com.example.media.myapplication.data.AppDataManager
 import com.example.media.myapplication.data.DataManager
 import com.example.media.myapplication.data.network.ApiManager
-import com.example.media.myapplication.base.BaseErrorCallback
-import com.example.media.myapplication.base.BaseRepository
-import com.example.media.myapplication.util.RetroResponse
 import com.example.media.myapplication.util.RetroResponse.*
 import com.example.media.myapplication.util.retroCall
 
@@ -38,7 +35,29 @@ class MainRepository(application: Application) : BaseRepository(), ApiCallFuncti
         }
     }
 
+    override fun getMovieDetail(movieId: Int, apiKey: String) {
+        retroCall(dataManager.getMovieDetail(movieId, apiKey)) {
+            when (it) {
+                is Success             -> movieDetail.value = it.data
+                is Failure             -> movieDetail.value = null
+                is NullData            -> movieDetail.value = null
+                is OnNetworkChange     -> errorCallback.onNetworkChanged(it.isChanged, it.message)
+                is OnResponseCodeError -> errorCallback.onWithOrWithoutErrorBody(it.message)
+            }
+        }
+    }
 
+    override fun getMovieCredits(movieId: Int, apiKey: String) {
+        retroCall(dataManager.getMovieCredits(movieId, apiKey)) {
+            when (it) {
+                is Success             -> movieCredits.value = it.data
+                is Failure             -> movieCredits.value = null
+                is NullData            -> movieCredits.value = null
+                is OnNetworkChange     -> errorCallback.onNetworkChanged(it.isChanged, it.message)
+                is OnResponseCodeError -> errorCallback.onWithOrWithoutErrorBody(it.message)
+            }
+        }
+    }
 }
 
 

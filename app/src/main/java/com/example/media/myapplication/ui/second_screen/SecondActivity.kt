@@ -1,8 +1,17 @@
 package com.example.media.myapplication.ui.second_screen
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.drawable.AnimatedVectorDrawable
+import android.os.Build
 import android.view.View
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.example.media.myapplication.R
 import com.example.media.myapplication.base.BaseActivity
+import com.example.media.myapplication.base.BaseRecyclerItemClick
+import com.example.media.myapplication.data.model.Cast
 import com.example.media.myapplication.databinding.ActivitySecondBinding
 import com.example.media.myapplication.util.Constants
 import com.example.media.myapplication.util.animateView
@@ -10,21 +19,42 @@ import com.google.android.material.appbar.AppBarLayout
 import kotlin.math.abs
 
 
-class SecondActivity : BaseActivity<ActivitySecondBinding, SecondViewModel>() {
+class SecondActivity : BaseActivity<ActivitySecondBinding, SecondViewModel>(), BaseRecyclerItemClick<Cast> {
 
     override fun setUpUi() {
+        viewModel.castAdapter = CastAdapter(emptyList<Cast>().toMutableList(), this)
         setToolbar(binding.toolbar)
         setHomeEnabled(true)
+        listenMutableEvent()
     }
 
+    private fun listenMutableEvent() {
+        viewModel.getMovieCredits.observe(this, Observer { data ->
+            data?.let {
+                viewModel.castAdapter?.addLists(it.cast)
+            }
+            viewModel.goneProgress.set(true)
+        })
+
+
+        viewModel.getMovieDetail.observe(this, Observer { data ->
+            data?.let {
+                viewModel.fillAllDetailData(it)
+            }
+            viewModel.goneProgress.set(true)
+        })
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun setUpListener() {
         intent?.let {
             viewModel.movieInfo = it.getParcelableExtra(Constants.MOVIES_INFO)
-            viewModel.moviesData = it.getParcelableExtra(Constants.MOVIES)
+            viewModel.callMovieDetailAndCreditApi()
+            viewModel.isFavorite = viewModel.movieInfo?.likeOrNot == 1
+            binding.contentSecond.ivIsFavorites.setImageDrawable(ContextCompat.getDrawable(binding.root.context, if (viewModel.movieInfo?.likeOrNot == 1) R.drawable.ic_favorite_black_fill_24dp else R.drawable.ic_favorite_border_black_24dp))
 
             when {
                 viewModel.movieInfo != null  -> binding.progress = viewModel.movieInfo?.totalVote.toString()
-                viewModel.moviesData != null -> binding.progress = viewModel.moviesData?.totalPercent.toString()
                 else                         -> binding.progress = "0"
             }
         }
@@ -44,6 +74,27 @@ class SecondActivity : BaseActivity<ActivitySecondBinding, SecondViewModel>() {
                 }
             }
         })
+
+        binding.contentSecond.ivIsFavorites.setOnClickListener {
+            if (!viewModel.isFavorite) {
+                viewModel.isFavorite = true
+                viewModel.insertOrDeleteMovieInfo()
+                binding.contentSecond.ivIsFavorites.setImageResource(R.drawable.like)
+                (binding.contentSecond.ivIsFavorites.drawable as AnimatedVectorDrawable).start()
+            } else {
+                viewModel.isFavorite = false
+                viewModel.insertOrDeleteMovieInfo()
+                binding.contentSecond.ivIsFavorites.setImageDrawable(ContextCompat.getDrawable(binding.root.context, R.drawable.ic_favorite_border_black_24dp))
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent()
+        intent.putExtra(Constants.CHECK_FAVOURITE, viewModel.isFavorite)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+        super.onBackPressed()
     }
 
     override fun getModel(): Class<SecondViewModel> = SecondViewModel::class.java

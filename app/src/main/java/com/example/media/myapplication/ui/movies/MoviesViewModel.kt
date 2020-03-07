@@ -13,6 +13,8 @@ import kotlinx.coroutines.launch
 
 class MoviesViewModel(application: Application) : BaseViewModel(application) {
 
+    var currentSelectedItem: Int = 0
+
     @get: Bindable
     var movieAdapter: MoviesAdapter? = null
         set(value) {
@@ -29,7 +31,7 @@ class MoviesViewModel(application: Application) : BaseViewModel(application) {
 
     fun insertOrDeleteMovieInfo(data: Movies) {
         val likeOrNot = if (data.isFavourate) 1 else 0
-        val movieInfo = MovieInfo(data.posterPath ?: "",data.backdropPath ?: "", data.title ?: "", likeOrNot, data.totalPercent ?: 0)
+        val movieInfo = MovieInfo(data.id ?: 0, data.posterPath ?: "",data.backdropPath ?: "", data.title ?: "", likeOrNot, data.totalPercent ?: 0)
         viewModelScope.launch {
             if (data.isFavourate) {
                 roomRepository.insertMoviewInfo(movieInfo)
@@ -44,7 +46,7 @@ class MoviesViewModel(application: Application) : BaseViewModel(application) {
             viewModelScope.launch {
                 getFavouriteMovies.collect { movieInfo: List<MovieInfo> ->
                     movieInfo.forEach {  localMovie ->
-                        if (localMovie.posterPath == movies.posterPath) {
+                        if (localMovie.movieId == movies.id ?: 0) {
                             (movieAdapter?.getDataList() as List<Movies>)[index].isFavourate = true
                             movieAdapter?.notifyItemChanged(index)
                         }
@@ -52,6 +54,12 @@ class MoviesViewModel(application: Application) : BaseViewModel(application) {
                 }
             }
         }
+    }
+
+    fun makeNotifyDataAndInsertAndDeleteData(favorite: Boolean) {
+        (movieAdapter?.getDataList() as List<Movies>)[currentSelectedItem].isFavourate = favorite
+        insertOrDeleteMovieInfo((movieAdapter?.getDataList() as List<Movies>)[currentSelectedItem])
+        movieAdapter?.notifyItemChanged(currentSelectedItem)
     }
 
 

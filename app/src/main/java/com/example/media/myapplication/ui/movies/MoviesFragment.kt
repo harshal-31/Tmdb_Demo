@@ -1,13 +1,14 @@
 package com.example.media.myapplication.ui.movies
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.media.myapplication.ActivityViewModel
 import com.example.media.myapplication.R
 import com.example.media.myapplication.base.BaseFragment
 import com.example.media.myapplication.base.BaseRecyclerItemClick
@@ -16,13 +17,14 @@ import com.example.media.myapplication.databinding.FragmentMoviesBinding
 import com.example.media.myapplication.ui.second_screen.SecondActivity
 import com.example.media.myapplication.util.Constants
 import com.example.vlcplayer.data.room_database.MovieInfo
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class MoviesFragment : BaseFragment<FragmentMoviesBinding, MoviesViewModel>(), BaseRecyclerItemClick<Movies>, SwipeRefreshLayout.OnRefreshListener {
 
+    private lateinit var parentModel: ActivityViewModel
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        parentModel = ViewModelProvider(baseActivity).get(ActivityViewModel::class.java)
         setUpUi()
         setUpListener()
         handleMutableEvent()
@@ -49,6 +51,14 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding, MoviesViewModel>(), B
             viewModel.goneProgress.set(true)
         })
 
+        parentModel.isFromMovies.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                viewModel.currentSelectedItem = it.first
+                viewModel.makeNotifyDataAndInsertAndDeleteData(it.second)
+                parentModel.isFromMovies.value = null
+            }
+        })
+
     }
 
     override fun onRefresh() {
@@ -60,9 +70,12 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding, MoviesViewModel>(), B
     }
 
     override fun onItemClick(data: Movies, position: Int) {
+        viewModel.currentSelectedItem = position
         val intent = Intent(baseActivity, SecondActivity::class.java)
-        intent.putExtra(Constants.MOVIES, data)
-        startActivity(intent)
+        val likeOrNot = if (data.isFavourate) 1 else 0
+        val movieInfo = MovieInfo(data.id ?: 0, data.posterPath ?: "", data.backdropPath ?: "", data.title ?: "", likeOrNot, data.totalPercent ?: 0)
+        intent.putExtra(Constants.MOVIES_INFO, movieInfo)
+        startActivityForResult(intent, 13)
     }
 
     override fun onWithOrWithoutErrorBody(message: String) {
@@ -73,6 +86,14 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding, MoviesViewModel>(), B
     override fun onNetworkChanged(isChanged: Boolean, message: String) {
         super.onNetworkChanged(isChanged, message)
         binding.moviesSwipe.isRefreshing = false
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 13 && resultCode == RESULT_OK) {
+            val isFavorite = data?.getBooleanExtra(Constants.CHECK_FAVOURITE, false) ?: false
+            viewModel.makeNotifyDataAndInsertAndDeleteData(isFavorite)
+        }
     }
 
     override fun isShare(): Boolean = false

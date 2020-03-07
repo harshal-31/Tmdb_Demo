@@ -13,9 +13,10 @@ import kotlinx.android.parcel.Parcelize
 @Entity(tableName = "movie_info_table")
 @Parcelize
 class MovieInfo(
-    @PrimaryKey val posterPath: String,
+    @PrimaryKey val movieId: Int,
+    val posterPath: String,
     val backPath: String = "",
     var title: String = "",
     var likeOrNot: Int = 0,
     var totalVote: Int
-): Parcelable
+) : Parcelable

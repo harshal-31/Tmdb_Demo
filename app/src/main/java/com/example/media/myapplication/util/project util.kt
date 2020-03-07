@@ -1,17 +1,23 @@
 package com.example.media.myapplication.util
 
+import android.annotation.SuppressLint
+import android.icu.text.NumberFormat
+import android.os.Build
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
-import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
+import androidx.annotation.RequiresApi
 import com.example.media.myapplication.base.BaseErrorCallback
 import com.example.media.myapplication.data.model.BaseErrorData
 import com.example.media.myapplication.data.model.ErrorMesssage
+import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 /**
  * Created by Harshal Chaudhari on 5/3/20.
@@ -27,11 +33,11 @@ internal inline fun <T> retroCall(call: Call<T>, errorCallback: BaseErrorCallbac
                 block(RetroResponse.Success(response.body()!!, date))
             } else {
                 when {
-                    response.body() != null  -> {
+                    response.body() != null -> {
                         block(RetroResponse.OnResponseCodeError((response.body()!! as BaseErrorData).statusMessage ?: ""))
                     }
 
-                    response.body() == null                          -> {
+                    response.body() == null -> {
 
                         try {
                             var errorMesssage: ErrorMesssage? = null
@@ -45,7 +51,7 @@ internal inline fun <T> retroCall(call: Call<T>, errorCallback: BaseErrorCallbac
                             block(RetroResponse.OnResponseCodeError("Something Went Wrong"))
                         }
                     }
-                    else                                             -> block(RetroResponse.NullData())
+                    else                    -> block(RetroResponse.NullData())
                 }
             }
         }
@@ -58,7 +64,6 @@ internal inline fun <T> retroCall(call: Call<T>, errorCallback: BaseErrorCallbac
         }
     })
 }
-
 
 
 internal fun View.shortSnack(message: Any) {
@@ -85,6 +90,23 @@ fun View.animateView() {
         startAnimation(animation1)
     }
 }
+
+
+
+
+
+fun Int.getHourAndMin(): String {
+    val data = this ?: 0
+    val hour = data / 60
+    val min = data % 60
+
+    return "$hour Hour $min Min"
+}
+
+val Int.getCurrencyValue: String
+    @RequiresApi(Build.VERSION_CODES.N)
+    get() = NumberFormat.getCurrencyInstance(Locale("en","US")).format(this)
+
 
 
 

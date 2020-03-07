@@ -38,52 +38,19 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
+
             <ImageView
                 android:id="@+id/ivFavorite"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="16dp"
-                android:tint="@color/inline_action_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:src="@drawable/ic_favorite_border_black_24dp"
-                app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
+                android:tint="@color/inline_action_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/frameLayout"
                 tools:ignore="ContentDescription" />
 
-
-            <FrameLayout
-                android:id="@+id/frameLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <TextView
-                    android:id="@+id/movieProressCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:includeFontPadding="false"
-                    android:textColor="@color/progresscolor"
-                    android:text="@{movies.totalPercent.toString()}"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    tools:text="12%" />
-
-                <ProgressBar
-                    android:id="@+id/movieProgress"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:background="@drawable/progress_shape"
-                    android:indeterminate="false"
-                    android:max="100"
-                    android:progress="@{movies.totalPercent}"
-                    android:progressDrawable="@drawable/progress_drawable" />
-
-            </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
