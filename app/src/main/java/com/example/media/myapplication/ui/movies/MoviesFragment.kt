@@ -16,6 +16,7 @@ import com.example.media.myapplication.base.BaseRecyclerItemClick
 import com.example.media.myapplication.data.model.Movies
 import com.example.media.myapplication.ui.second_screen.SecondActivity
 import com.example.media.myapplication.util.Constants
+import com.example.media.myapplication.util.shortSnack
 import com.example.vlcplayer.data.room_database.MovieInfo
 
 class MoviesFragment : BaseFragment<FragmentMoviesBinding, MoviesViewModel>(), BaseRecyclerItemClick<Movies>, SwipeRefreshLayout.OnRefreshListener {
@@ -65,6 +66,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding, MoviesViewModel>(), B
     }
 
     override fun onFavoriteClick(data: Movies, position: Int, view: ImageView) {
+        binding.root.shortSnack("Movie is ${if (data.isFavourate) "Added to" else  "Remove From"} Favorite")
         viewModel.insertOrDeleteMovieInfo(data)
     }
 

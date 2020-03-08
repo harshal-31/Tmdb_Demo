@@ -13,6 +13,7 @@ import com.example.media.myapplication.base.BaseRecyclerItemClick
 import com.example.media.myapplication.data.model.Cast
 import com.example.media.myapplication.databinding.ActivitySecondBinding
 import com.example.media.myapplication.util.Constants
+import com.example.media.myapplication.util.shortSnack
 import com.google.android.material.appbar.AppBarLayout
 import kotlin.math.abs
 
@@ -84,6 +85,8 @@ class SecondActivity : BaseActivity<ActivitySecondBinding, SecondViewModel>(), B
                 viewModel.insertOrDeleteMovieInfo()
                 binding.contentSecond.ivIsFavorites.setImageDrawable(ContextCompat.getDrawable(binding.root.context, R.drawable.ic_favorite_border_black_24dp))
             }
+
+            binding.root.shortSnack("Movie is ${if (viewModel.isFavorite) "Added to" else  "Remove From"} Favorite")
         }
     }
 

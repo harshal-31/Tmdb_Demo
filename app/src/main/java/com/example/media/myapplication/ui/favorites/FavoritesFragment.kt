@@ -14,6 +14,7 @@ import com.example.media.myapplication.base.BaseRecyclerItemClick
 import com.example.media.myapplication.databinding.FragmentFavoritesBinding
 import com.example.media.myapplication.ui.second_screen.SecondActivity
 import com.example.media.myapplication.util.Constants
+import com.example.media.myapplication.util.shortSnack
 import com.example.vlcplayer.data.room_database.MovieInfo
 import kotlinx.coroutines.flow.collect
 
@@ -45,6 +46,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoriteViewMod
     }
 
     override fun onFavoriteClick(data: MovieInfo, position: Int, view: ImageView) {
+        binding.root.shortSnack("Movie is ${if (data.likeOrNot == 1) "Added to" else  "Remove From"} Favorite")
         viewModel.insertOrDeleteMovieInfo(data)
     }
 
