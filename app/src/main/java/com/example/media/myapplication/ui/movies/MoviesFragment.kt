@@ -10,10 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.media.myapplication.ActivityViewModel
 import com.example.media.myapplication.R
+import com.example.media.myapplication.databinding.FragmentMoviesBinding
 import com.example.media.myapplication.base.BaseFragment
 import com.example.media.myapplication.base.BaseRecyclerItemClick
 import com.example.media.myapplication.data.model.Movies
-import com.example.media.myapplication.databinding.FragmentMoviesBinding
 import com.example.media.myapplication.ui.second_screen.SecondActivity
 import com.example.media.myapplication.util.Constants
 import com.example.vlcplayer.data.room_database.MovieInfo
@@ -53,8 +53,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding, MoviesViewModel>(), B
 
         parentModel.isFromMovies.observe(viewLifecycleOwner, Observer {
             it?.let {
-                viewModel.currentSelectedItem = it.first
-                viewModel.makeNotifyDataAndInsertAndDeleteData(it.second)
+                viewModel.makeNotifyDataAndInsertAndDeleteData(it.second, it.first)
                 parentModel.isFromMovies.value = null
             }
         })
@@ -70,11 +69,11 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding, MoviesViewModel>(), B
     }
 
     override fun onItemClick(data: Movies, position: Int) {
-        viewModel.currentSelectedItem = position
         val intent = Intent(baseActivity, SecondActivity::class.java)
         val likeOrNot = if (data.isFavourate) 1 else 0
         val movieInfo = MovieInfo(data.id ?: 0, data.posterPath ?: "", data.backdropPath ?: "", data.title ?: "", likeOrNot, data.totalPercent ?: 0)
         intent.putExtra(Constants.MOVIES_INFO, movieInfo)
+        intent.putExtra(Constants.CURRENT_INDEX, position)
         startActivityForResult(intent, 13)
     }
 
@@ -91,8 +90,9 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding, MoviesViewModel>(), B
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 13 && resultCode == RESULT_OK) {
+            val index = data?.getIntExtra(Constants.CURRENT_INDEX, 0) ?: 0
             val isFavorite = data?.getBooleanExtra(Constants.CHECK_FAVOURITE, false) ?: false
-            viewModel.makeNotifyDataAndInsertAndDeleteData(isFavorite)
+            viewModel.makeNotifyDataAndInsertAndDeleteData(isFavorite, index)
         }
     }
 

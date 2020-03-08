@@ -51,6 +51,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoriteViewMod
         viewModel.currentSelectedItem = position
         val intent = Intent(baseActivity, SecondActivity::class.java)
         intent.putExtra(Constants.MOVIES_INFO, data)
+        intent.putExtra(Constants.CURRENT_INDEX, position)
         startActivityForResult(intent, 13)
     }
 
@@ -58,8 +59,9 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoriteViewMod
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 13 && resultCode == Activity.RESULT_OK) {
+            val index = data?.getIntExtra(Constants.CURRENT_INDEX, 0) ?: 0
             val isFavorite = data?.getBooleanExtra(Constants.CHECK_FAVOURITE, false) ?: false
-            parentModel.isFromMovies.value = Pair(viewModel.currentSelectedItem, isFavorite)
+            parentModel.isFromMovies.value = Pair(index, isFavorite)
         }
     }
 

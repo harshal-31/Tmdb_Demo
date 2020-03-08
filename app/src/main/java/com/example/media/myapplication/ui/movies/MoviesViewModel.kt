@@ -3,6 +3,7 @@ package com.example.media.myapplication.ui.movies
 import android.app.Application
 import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.RecyclerView
 import com.example.media.myapplication.base.BaseViewModel
 import com.example.media.myapplication.data.model.Movies
 import com.example.media.myapplication.util.Constants
@@ -12,8 +13,6 @@ import kotlinx.coroutines.launch
 
 
 class MoviesViewModel(application: Application) : BaseViewModel(application) {
-
-    var currentSelectedItem: Int = 0
 
     @get: Bindable
     var movieAdapter: MoviesAdapter? = null
@@ -56,10 +55,12 @@ class MoviesViewModel(application: Application) : BaseViewModel(application) {
         }
     }
 
-    fun makeNotifyDataAndInsertAndDeleteData(favorite: Boolean) {
-        (movieAdapter?.getDataList() as List<Movies>)[currentSelectedItem].isFavourate = favorite
-        insertOrDeleteMovieInfo((movieAdapter?.getDataList() as List<Movies>)[currentSelectedItem])
-        movieAdapter?.notifyItemChanged(currentSelectedItem)
+    fun makeNotifyDataAndInsertAndDeleteData(favorite: Boolean, index: Int) {
+        if (index != RecyclerView.NO_POSITION) {
+            (movieAdapter?.getDataList() as List<Movies>)[index].isFavourate = favorite
+            insertOrDeleteMovieInfo((movieAdapter?.getDataList() as List<Movies>)[index])
+            movieAdapter?.notifyItemChanged(index)
+        }
     }
 
 

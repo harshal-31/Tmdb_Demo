@@ -58,7 +58,7 @@ class MoviesAdapter(list: MutableList<Movies>, itemClick: BaseRecyclerItemClick<
                 when (it.id) {
                     binding.root.id       -> itemClick.onItemClick(data!!, adapterPosition)
                     binding.ivFavorite.id -> {
-                        makeHeartItemClick()
+                        makeHeartItemClick(data!!)
                         itemClick.onFavoriteClick(data!!, adapterPosition, binding.ivFavorite)
                     }
                 }
@@ -66,14 +66,14 @@ class MoviesAdapter(list: MutableList<Movies>, itemClick: BaseRecyclerItemClick<
         }
 
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-        fun makeHeartItemClick() {
-            if (!list[adapterPosition].isFavourate) {
-                list[adapterPosition].isFavourate = true
+        fun makeHeartItemClick(data: Movies) {
+            if (!data.isFavourate) {
+                data.isFavourate = true
                 binding.ivFavorite.setImageResource(R.drawable.like)
                 (binding.ivFavorite.drawable as AnimatedVectorDrawable).start()
                 notifyItemChanged(adapterPosition)
             } else {
-                list[adapterPosition].isFavourate = false
+                data.isFavourate = false
                 binding.ivFavorite.setImageDrawable(ContextCompat.getDrawable(binding.root.context, R.drawable.ic_favorite_border_black_24dp))
                 notifyItemChanged(adapterPosition)
             }

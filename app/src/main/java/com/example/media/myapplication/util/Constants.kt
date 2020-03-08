@@ -10,4 +10,5 @@ object Constants {
     const val Language = "en-US"
     const val MOVIES_INFO = "moviesInfo"
     const val CHECK_FAVOURITE = "checkFavourite"
+    const val CURRENT_INDEX = "currentIndex"
 }

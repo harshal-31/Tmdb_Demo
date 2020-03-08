@@ -21,6 +21,8 @@ import kotlin.math.abs
 
 class SecondActivity : BaseActivity<ActivitySecondBinding, SecondViewModel>(), BaseRecyclerItemClick<Cast> {
 
+    private var index = 0
+
     override fun setUpUi() {
         viewModel.castAdapter = CastAdapter(emptyList<Cast>().toMutableList(), this)
         setToolbar(binding.toolbar)
@@ -49,6 +51,7 @@ class SecondActivity : BaseActivity<ActivitySecondBinding, SecondViewModel>(), B
     override fun setUpListener() {
         intent?.let {
             viewModel.movieInfo = it.getParcelableExtra(Constants.MOVIES_INFO)
+            index = it.getIntExtra(Constants.CURRENT_INDEX, 0)
             viewModel.callMovieDetailAndCreditApi()
             viewModel.isFavorite = viewModel.movieInfo?.likeOrNot == 1
             binding.contentSecond.ivIsFavorites.setImageDrawable(ContextCompat.getDrawable(binding.root.context, if (viewModel.movieInfo?.likeOrNot == 1) R.drawable.ic_favorite_black_fill_24dp else R.drawable.ic_favorite_border_black_24dp))
@@ -92,6 +95,7 @@ class SecondActivity : BaseActivity<ActivitySecondBinding, SecondViewModel>(), B
     override fun onBackPressed() {
         val intent = Intent()
         intent.putExtra(Constants.CHECK_FAVOURITE, viewModel.isFavorite)
+        intent.putExtra(Constants.CURRENT_INDEX, index)
         setResult(Activity.RESULT_OK, intent)
         finish()
         super.onBackPressed()
