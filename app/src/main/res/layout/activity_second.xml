@@ -11,6 +11,8 @@
             name="progress"
             type="String" />
 
+         <import type="android.view.View"/>
+
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -54,8 +56,10 @@
                     app:popupTheme="@style/AppTheme.PopupOverlay">
 
                     <TextView
+                        android:id="@+id/toolbarTitle"
                         android:text="@{viewModel.headerTitle}"
                         android:textSize="18sp"
+                        android:visibility="@{viewModel.isDisplay ? View.VISIBLE : View.GONE}"
                         android:textColor="#ffffff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -77,6 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
             app:layout_anchor="@id/app_bar"
+            android:visibility="@{viewModel.isDisplay ? View.GONE : View.VISIBLE }"
             app:layout_anchorGravity="bottom|end">
 
             <TextView

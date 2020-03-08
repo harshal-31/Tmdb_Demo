@@ -2,6 +2,7 @@ package com.example.media.myapplication.ui.second_screen
 
 import android.app.Application
 import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.viewModelScope
@@ -31,6 +32,7 @@ class SecondViewModel(application: Application) : BaseViewModel(application) {
     val released = ObservableField("")
     val originalLanguage = ObservableField("")
     val progressString = ObservableField("")
+    var isDisplay = ObservableBoolean(false)
 
 
     @get: Bindable

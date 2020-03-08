@@ -34,12 +34,13 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoriteViewMod
             viewModel.getFavouriteMovies.collect {
                 viewModel.favouriteAdapter?.clearDataList()
                 viewModel.favouriteAdapter?.addLists(it)
+                viewModel.isDisplayNoData.set(viewModel.favouriteAdapter?.itemCount == 0)
+                viewModel.noDataAvailableMsg.set(getString(R.string.no_movies))
             }
         }
     }
 
     override fun setUpListener() {
-
 
     }
 

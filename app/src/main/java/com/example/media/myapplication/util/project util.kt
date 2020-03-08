@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.icu.text.NumberFormat
 import android.os.Build
 import android.view.View
+import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.FragmentActivity
 import com.example.media.myapplication.base.BaseErrorCallback
 import com.example.media.myapplication.data.model.BaseErrorData
 import com.example.media.myapplication.data.model.ErrorMesssage
@@ -82,18 +84,6 @@ val Double.calculatePercent: Int
     get() = ((this * 100) / 10).toInt()
 
 
-fun View.animateView() {
-    this.apply {
-        val animation1 = AlphaAnimation(0.2f, 1.0f)
-        animation1.duration = 300
-        alpha = 1f
-        startAnimation(animation1)
-    }
-}
-
-
-
-
 
 fun Int.getHourAndMin(): String {
     val data = this ?: 0
@@ -107,6 +97,12 @@ val Int.getCurrencyValue: String
     @RequiresApi(Build.VERSION_CODES.N)
     get() = NumberFormat.getCurrencyInstance(Locale("en","US")).format(this)
 
+fun FragmentActivity.changeStatusBarColor(colorCode: Int) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = colorCode
+    }
+}
 
 
 

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Build
-import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -14,7 +13,6 @@ import com.example.media.myapplication.base.BaseRecyclerItemClick
 import com.example.media.myapplication.data.model.Cast
 import com.example.media.myapplication.databinding.ActivitySecondBinding
 import com.example.media.myapplication.util.Constants
-import com.example.media.myapplication.util.animateView
 import com.google.android.material.appbar.AppBarLayout
 import kotlin.math.abs
 
@@ -57,8 +55,8 @@ class SecondActivity : BaseActivity<ActivitySecondBinding, SecondViewModel>(), B
             binding.contentSecond.ivIsFavorites.setImageDrawable(ContextCompat.getDrawable(binding.root.context, if (viewModel.movieInfo?.likeOrNot == 1) R.drawable.ic_favorite_black_fill_24dp else R.drawable.ic_favorite_border_black_24dp))
 
             when {
-                viewModel.movieInfo != null  -> binding.progress = viewModel.movieInfo?.totalVote.toString()
-                else                         -> binding.progress = "0"
+                viewModel.movieInfo != null -> binding.progress = viewModel.movieInfo?.totalVote.toString()
+                else                        -> binding.progress = "0"
             }
         }
 
@@ -67,13 +65,10 @@ class SecondActivity : BaseActivity<ActivitySecondBinding, SecondViewModel>(), B
                 val offset = appBarLayout?.getTotalScrollRange() ?: 0
                 if (abs(verticalOffset) - offset == 0) {
                     //collapse
-                    binding.fab.animateView()
-                    binding.fab.visibility = View.GONE
-                }
-                else {
+                    viewModel.isDisplay.set(true)
+                } else {
                     //Expanded
-                    binding.fab.animateView()
-                    binding.fab.visibility = View.VISIBLE
+                    viewModel.isDisplay.set(false)
                 }
             }
         })

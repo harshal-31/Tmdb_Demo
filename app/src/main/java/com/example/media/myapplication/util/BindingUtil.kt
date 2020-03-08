@@ -90,4 +90,5 @@ object BindingUtil {
             adapter = it
         }
     }
+
 }
