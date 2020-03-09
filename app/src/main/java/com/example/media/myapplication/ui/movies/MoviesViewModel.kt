@@ -1,6 +1,7 @@
 package com.example.media.myapplication.ui.movies
 
 import android.app.Application
+import android.util.Log
 import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
@@ -44,10 +45,13 @@ class MoviesViewModel(application: Application) : BaseViewModel(application) {
         movieAdapter?.getDataList()?.asSequence()?.forEachIndexed { index, movies ->
             viewModelScope.launch {
                 getFavouriteMovies.collect { movieInfo: List<MovieInfo> ->
-                    movieInfo.forEach {  localMovie ->
-                        if (localMovie.movieId == movies.id ?: 0) {
-                            (movieAdapter?.getDataList() as List<Movies>)[index].isFavourate = true
-                            movieAdapter?.notifyItemChanged(index)
+                    for (movieInfos in movieInfo) {
+                        Log.d("Index Pos","indexPos  $index")
+                        if (movieInfos.movieId== movies.id ?: 0) {
+                            if ((movieAdapter?.getDataList() as List<Movies>).isNotEmpty()) {
+                                (movieAdapter?.getDataList() as List<Movies>)[index].isFavourate = true
+                                movieAdapter?.notifyItemChanged(index)
+                            }
                         }
                     }
                 }

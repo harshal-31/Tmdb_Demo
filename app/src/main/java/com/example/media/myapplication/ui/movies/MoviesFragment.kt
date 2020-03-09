@@ -45,8 +45,9 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding, MoviesViewModel>(), B
         viewModel.getTopRatedMovies.observe(viewLifecycleOwner, Observer {
             it?.let {
                 viewModel.movieAdapter?.addLists(it.results.toMutableList())
+                viewModel.checkMovieIsFavouriteOrNot()
             }
-            viewModel.checkMovieIsFavouriteOrNot()
+
             viewModel.movieAdapter?.isLoad = false
             binding.moviesSwipe.isRefreshing = false
             viewModel.goneProgress.set(true)
